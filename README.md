@@ -1,4 +1,4 @@
-# Vending Concepción — Landing
+# PuntoMatica — Landing
 
 Sitio estático. No requiere build.
 
