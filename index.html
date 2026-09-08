@@ -11,10 +11,35 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
 <style>
+  html { scroll-behavior:smooth; }
+  body { overflow-x:hidden; }
+  section[id], footer[id] { scroll-margin-top:76px; }
   body { margin:0; font-family:'Poppins',Helvetica,Arial,sans-serif; background:#14141C; }
   a { color:#FFC72C; text-decoration:none; }
   a:hover { color:#E6A800; }
-  @media (max-width: 900px) {
+  @keyframes pm-bob { 0%,100% { transform: translateY(0) rotate(0deg); } 25% { transform: translateY(-3px) rotate(-1.5deg); } 50% { transform: translateY(-4.5px) rotate(0deg); } 75% { transform: translateY(-2px) rotate(1.5deg); } }
+  @keyframes pm-blink { 0%,88%,100% { transform: scaleY(1); } 92%,96% { transform: scaleY(0.08); } }
+  @keyframes pm-wave { 0%,58%,100% { transform: rotate(6deg); } 66% { transform: rotate(-52deg); } 72% { transform: rotate(-30deg); } 78% { transform: rotate(-52deg); } 84% { transform: rotate(-30deg); } 90% { transform: rotate(-48deg); } }
+  @keyframes pm-antenna { 0%,100% { transform: rotate(-8deg); } 50% { transform: rotate(10deg); } }
+  @keyframes pm-glow { 0%,100% { opacity: 0.30; transform: scale(1); } 50% { opacity: 0.6; transform: scale(1.14); } }
+  @media (prefers-reduced-motion: reduce) { [data-pm-anim] { animation: none !important; } }
+  [data-hdr-root] { transition: padding 260ms ease, background 260ms ease, border-color 260ms ease; }
+  [data-hdr-root] > div { transition: max-width 300ms ease, background 300ms ease, border-radius 300ms ease, box-shadow 300ms ease, padding 260ms ease, border-color 300ms ease; border: 1px solid transparent; }
+  [data-hdr-root][data-float="1"] { background: transparent !important; border-bottom-color: transparent !important; padding: 10px 16px; }
+  [data-hdr-root][data-float="1"] > div { max-width: 1060px; background: rgba(24,24,33,0.88); border-radius: 999px; border-color: #33333F; box-shadow: 0 14px 38px rgba(0,0,0,0.45); padding: 10px 14px 10px 22px; }
+  [data-hdr-root][data-float="1"] [data-nav] { font-size: 13px; }
+  [data-hdr-root][data-active="inicio"] [data-nav] a[href="#inicio"] { color:#FFC72C !important; }
+  [data-hdr-root][data-active="nosotros"] [data-nav] a[href="#nosotros"] { color:#FFC72C !important; }
+  [data-hdr-root][data-active="beneficios"] [data-nav] a[href="#beneficios"] { color:#FFC72C !important; }
+  [data-hdr-root][data-active="catalogo"] [data-nav] a[href="#catalogo"] { color:#FFC72C !important; }
+  [data-hdr-root][data-active="servicios"] [data-nav] a[href="#servicios"] { color:#FFC72C !important; }
+  [data-hdr-root][data-active="maquinas"] [data-nav] a[href="#maquinas"] { color:#FFC72C !important; }
+  [data-hdr-root][data-active="contacto"] [data-nav] a[href="#contacto"] { color:#FFC72C !important; }
+  [data-hdr-root][data-float="1"] [data-cta] { padding: 10px 18px; }
+  @media (max-width: 1060px) {
+    [data-hdr-root][data-float="1"] > div { border-radius: 22px; padding: 10px 14px; }
+  }
+  @media (max-width: 1060px) {
     [data-burger] { display: flex !important; }
     [data-nav] { display: none !important; width: 100%; order: 3; flex-direction: column; gap: 16px; padding: 10px 0 4px; }
     [data-hdr][data-open="1"] [data-nav] { display: flex !important; }
@@ -26,37 +51,54 @@
     [data-hero-copy] { padding-bottom: 40px !important; }
     [data-hero-img] { justify-content: center !important; width: 100%; }
     [data-footer-mascota] { margin-top: -60px !important; }
+    [data-espirales] { display: none !important; }
   }
 </style>
 </helmet>
 
-<main style="background:#14141C; color:#fff; overflow-x:hidden">
+<main style="background:#14141C; color:#fff">
 
-  <header style="position:sticky; top:0; z-index:50; background:rgba(20,20,28,0.94); borderBottom:1px solid #26262F; backdropFilter:blur(8px)">
+  <header data-hdr-root="1" data-float="{{ floatAttr }}" data-active="{{ activeSection }}" style="position:sticky; top:0; z-index:50; background:rgba(20,20,28,0.94); borderBottom:1px solid #26262F; backdropFilter:blur(8px)">
     <div data-hdr="1" data-open="{{ menuAttr }}" style="maxWidth:1200px; margin:0 auto; padding:14px 24px; display:flex; alignItems:center; gap:24px; justifyContent:space-between; flexWrap:wrap">
       <div style="display:flex; alignItems:center; gap:10px">
-        <svg width="26" height="38" viewBox="0 0 120 180" aria-hidden="true">
-          <rect x="15" y="10" width="90" height="110" rx="16" fill="#1E1E29" stroke="#3A3A48" stroke-width="3"></rect>
-          <rect x="27" y="22" width="66" height="60" rx="10" fill="#FFC72C"></rect>
-          <circle cx="48" cy="46" r="6" fill="#14141C"></circle>
-          <circle cx="72" cy="46" r="6" fill="#14141C"></circle>
-          <path d="M46 62 Q60 74 74 62" stroke="#14141C" stroke-width="5" fill="none" stroke-linecap="round"></path>
-          <rect x="34" y="122" width="14" height="28" rx="7" fill="#1E1E29"></rect>
-          <rect x="72" y="122" width="14" height="28" rx="7" fill="#1E1E29"></rect>
-          <rect x="26" y="146" width="32" height="14" rx="7" fill="#FFC72C"></rect>
-          <rect x="64" y="146" width="32" height="14" rx="7" fill="#FFC72C"></rect>
+        <svg width="34" height="40" viewBox="0 0 150 180" aria-hidden="true" style="overflow:visible; flexShrink:0">
+          <ellipse cx="66" cy="60" rx="58" ry="56" fill="#FFC72C" data-pm-anim="1" style="animation:pm-glow 3.6s ease-in-out infinite; transformOrigin:66px 60px; opacity:0.3; filter:blur(14px)"></ellipse>
+          <g data-pm-anim="1" style="animation:pm-bob 3.6s ease-in-out infinite; transformOrigin:66px 150px">
+            <g data-pm-anim="1" style="animation:pm-antenna 3.6s ease-in-out infinite; transformOrigin:96px 30px">
+              <rect x="92" y="0" width="9" height="34" rx="4.5" fill="#3A3A48"></rect>
+              <circle cx="96" cy="-2" r="10" fill="#F4F6F8"></circle>
+            </g>
+            <rect x="15" y="24" width="102" height="104" rx="30" fill="#1E1E29" stroke="#3A3A48" stroke-width="3"></rect>
+            <rect x="29" y="38" width="74" height="62" rx="16" fill="#FFC72C"></rect>
+            <g data-pm-anim="1" style="animation:pm-blink 3.6s ease-in-out infinite; transformOrigin:53px 62px">
+              <rect x="47" y="54" width="11" height="16" rx="5.5" fill="#14141C"></rect>
+            </g>
+            <g data-pm-anim="1" style="animation:pm-blink 3.6s ease-in-out infinite; transformOrigin:79px 62px">
+              <rect x="74" y="54" width="11" height="16" rx="5.5" fill="#14141C"></rect>
+            </g>
+            <path d="M50 80 Q66 93 82 80" stroke="#14141C" stroke-width="6" fill="none" stroke-linecap="round"></path>
+            <g data-pm-anim="1" style="animation:pm-wave 3.6s ease-in-out infinite; transformOrigin:122px 72px">
+              <rect x="115" y="66" width="14" height="42" rx="7" fill="#3A3A48"></rect>
+              <circle cx="122" cy="112" r="10" fill="#F4F6F8"></circle>
+            </g>
+            <rect x="34" y="130" width="16" height="24" rx="8" fill="#1E1E29"></rect>
+            <rect x="82" y="130" width="16" height="24" rx="8" fill="#1E1E29"></rect>
+            <rect x="26" y="150" width="34" height="14" rx="7" fill="#FFC72C"></rect>
+            <rect x="72" y="150" width="34" height="14" rx="7" fill="#FFC72C"></rect>
+          </g>
         </svg>
         <span style="fontWeight:700; fontSize:17px; letterSpacing:-0.2px">PuntoMatica</span>
       </div>
       <button type="button" data-burger="1" aria-label="Abrir menú" aria-expanded="{{ menuOpen }}" onClick="{{ toggleMenu }}" style="display:none; alignItems:center; justifyContent:center; width:44px; height:44px; borderRadius:10px; border:1px solid #33333F; background:transparent; cursor:pointer; padding:0; order:2">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FFC72C" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"></path></svg>
       </button>
-      <nav aria-label="Principal" data-nav="1" style="display:flex; gap:26px; flexWrap:wrap; fontSize:14px; color:#C9C9D2; fontWeight:500">
+      <nav aria-label="Principal" data-nav="1" style="display:flex; gap:20px; flexWrap:nowrap; fontSize:14px; color:#C9C9D2; fontWeight:500">
         <a href="#inicio" onClick="{{ closeMenu }}" style="color:#C9C9D2">Inicio</a>
-        <a href="#maquinas" onClick="{{ closeMenu }}" style="color:#C9C9D2">Máquinas</a>
+        <a href="#nosotros" onClick="{{ closeMenu }}" style="color:#C9C9D2">Nosotros</a>
+        <a href="#beneficios" onClick="{{ closeMenu }}" style="color:#C9C9D2">Beneficios</a>
         <a href="#catalogo" onClick="{{ closeMenu }}" style="color:#C9C9D2">Catálogo</a>
         <a href="#servicios" onClick="{{ closeMenu }}" style="color:#C9C9D2">Servicios</a>
-        <a href="#nosotros" onClick="{{ closeMenu }}" style="color:#C9C9D2">Nosotros</a>
+        <a href="#maquinas" onClick="{{ closeMenu }}" style="color:#C9C9D2">Máquinas</a>
         <a href="#contacto" onClick="{{ closeMenu }}" style="color:#C9C9D2">Contacto</a>
       </nav>
       <a href="#contacto" data-cta="1" onClick="{{ closeMenu }}" style="background:#FFC72C; color:#14141C; fontWeight:700; fontSize:14px; padding:12px 20px; borderRadius:10px; whiteSpace:nowrap" style-hover="background:#E6A800">Solicitar Evaluación</a>
@@ -120,12 +162,12 @@
       <h2 style="margin:0 0 24px; fontSize:clamp(28px,3.4vw,44px); lineHeight:1.1; fontWeight:800; letterSpacing:-1.2px; textWrap:balance">Hola, somos PuntoMatica y nos gustaría ser tu nuevo vecino</h2>
       <p style="margin:0; fontSize:17px; lineHeight:1.65; maxWidth:560px; textWrap:pretty">Acercamos la conveniencia a los lugares donde las personas viven y trabajan. Instalamos mini-markets automáticos en edificios residenciales del Gran Concepción, ofreciendo acceso a snacks, bebidas y abarrotes esenciales disponibles 24/7. Nos encargamos de la instalación, abastecimiento y mantenimiento del servicio, entregando una solución moderna y práctica para tu comunidad.</p>
     </div>
-    <div style="position:relative; minHeight:420px; overflow:hidden">
+    <div data-espirales="1" style="position:relative; minHeight:420px; overflow:hidden">
       <img src="assets/espirales.png" alt="Espirales de una máquina expendedora PuntoMatica en operación" style="position:absolute; inset:0; width:100%; height:100%; objectFit:cover; display:block">
     </div>
   </section>
 
-  <section style="background:#F6F6F3; color:#14141C; padding:clamp(56px,7vw,104px) 24px">
+  <section id="beneficios" style="background:#F6F6F3; color:#14141C; padding:clamp(56px,7vw,104px) 24px">
     <div style="maxWidth:1200px; margin:0 auto; display:flex; gap:clamp(32px,5vw,72px); alignItems:center; flexWrap:wrap">
       <div style="flex:0 1 360px; display:flex; flexDirection:column; alignItems:center; gap:18px">
         <div style="position:relative; width:100%; maxWidth:400px; aspectRatio:640/501; transition:transform 260ms cubic-bezier(0.4,0,0.2,1)" style-hover="transform:scale(1.08)">
@@ -380,8 +422,11 @@
         </div>
         <div style="display:flex; gap:22px; fontSize:13px">
           <a href="#inicio" style="color:#8A8A96">Inicio</a>
-          <a href="#servicios" style="color:#8A8A96">Servicios</a>
+          <a href="#nosotros" style="color:#8A8A96">Nosotros</a>
+          <a href="#beneficios" style="color:#8A8A96">Beneficios</a>
           <a href="#catalogo" style="color:#8A8A96">Catálogo</a>
+          <a href="#servicios" style="color:#8A8A96">Servicios</a>
+          <a href="#maquinas" style="color:#8A8A96">Máquinas</a>
           <a href="#contacto" style="color:#8A8A96">Contacto</a>
         </div>
       </div>
@@ -427,14 +472,54 @@ class Component extends DCLogic {
     e.preventDefault();
     const f = this.state.form;
     const faltan = ['nombre', 'apellido', 'email', 'edificio'].filter(k => !String(f[k]).trim());
-    this.setState({ msg: faltan.length ? 'Completa los campos obligatorios.' : '¡Gracias! Te contactaremos dentro de 24 horas.' });
+    if (faltan.length) { this.setState({ msg: 'Completa los campos obligatorios.' }); return; }
+    this.setState({ msg: 'Enviando…' });
+    fetch('https://formsubmit.co/ajax/seba.romanp@gmail.com', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      body: JSON.stringify({
+        _subject: 'Nueva solicitud de evaluación — PuntoMatica',
+        _template: 'table',
+        Nombre: f.nombre + ' ' + f.apellido,
+        Email: f.email,
+        Edificio: f.edificio,
+        Dirección: f.direccion || '—',
+        Comuna: f.comuna,
+        'Quiere novedades': f.novedades ? 'Sí' : 'No'
+      })
+    })
+      .then(r => r.json())
+      .then(() => this.setState({
+        msg: '¡Gracias! Te contactaremos dentro de 24 horas.',
+        form: { nombre: '', apellido: '', email: '', edificio: '', direccion: '', comuna: 'Concepción', novedades: true }
+      }))
+      .catch(() => this.setState({ msg: 'No se pudo enviar. Escríbenos a contacto@puntomatica.cl' }));
+  };
+
+  onScroll = () => {
+    const y = window.scrollY || window.pageYOffset || 0;
+    const ids = ['inicio', 'nosotros', 'beneficios', 'catalogo', 'servicios', 'maquinas', 'contacto'];
+    let current = 'inicio';
+    for (const id of ids) {
+      const el = document.getElementById(id);
+      if (el && el.getBoundingClientRect().top <= 140) current = id;
+    }
+    const floating = y > 120;
+    if (floating !== this.state.floating || current !== this.state.section) {
+      this.setState({ floating, section: current });
+    }
   };
 
   componentDidMount() {
+    window.addEventListener('scroll', this.onScroll, { passive: true });
+    this.onScroll();
     this.timer = setInterval(() => this.setState(s => ({ slide: (s.slide + 1) % SLIDES.length })), 4000);
   }
 
-  componentWillUnmount() { clearInterval(this.timer); }
+  componentWillUnmount() {
+    clearInterval(this.timer);
+    window.removeEventListener('scroll', this.onScroll);
+  }
 
   goSlide = (i) => {
     clearInterval(this.timer);
@@ -445,6 +530,8 @@ class Component extends DCLogic {
   renderVals() {
     const active = CATS.find(c => c.key === this.state.active) || CATS[0];
     return {
+      floatAttr: this.state.floating ? '1' : '0',
+      activeSection: this.state.section || 'inicio',
       menuOpen: !!this.state.menuOpen,
       menuAttr: this.state.menuOpen ? '1' : '0',
       toggleMenu: () => this.setState(s => ({ menuOpen: !s.menuOpen })),
