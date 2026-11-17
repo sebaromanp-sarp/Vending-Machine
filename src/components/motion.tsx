@@ -95,10 +95,13 @@ export function Reveal({
   children,
   delay = 0,
   className = '',
+  flip = false,
 }: {
   children: ReactNode;
   delay?: number;
   className?: string;
+  /** Entra girando desde atrás, como una tarjeta que se levanta */
+  flip?: boolean;
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const [shown, setShown] = useState(false);
@@ -123,8 +126,11 @@ export function Reveal({
       className={className}
       style={{
         opacity: shown ? 1 : 0,
-        transform: shown ? 'none' : 'translateY(24px)',
-        transition: 'opacity 800ms ease, transform 800ms cubic-bezier(.2,.7,.2,1)',
+        transform: shown ? 'none' : flip ? 'perspective(1000px) rotateX(24deg) translateY(48px) scale(0.96)' : 'translateY(24px)',
+        transformOrigin: '50% 100%',
+        transition: flip
+          ? 'opacity 700ms ease, transform 1100ms cubic-bezier(.16,1,.3,1)'
+          : 'opacity 800ms ease, transform 800ms cubic-bezier(.2,.7,.2,1)',
         transitionDelay: `${delay}ms`,
       }}
     >

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { ArrowRight, CircleDollarSign, DoorOpen, HandCoins, MapPin, PackageCheck, Truck, Wrench } from 'lucide-react';
 import { BENEFITS, BRANDS, CATS, MACHINES, NAV, SERVICES, STATS } from '../data';
 import { Reveal } from './motion';
+import { Layer, TiltCard } from './Tilt';
 import { LogoIcon } from './Navbar';
 import CityLights from './CityLights';
 
@@ -52,21 +53,33 @@ export function Benefits() {
             Lo que gana tu comunidad al sumar el servicio.
           </h2>
         </Reveal>
-        <div className="grid sm:grid-cols-2 gap-4">
+        <div className="grid sm:grid-cols-2 gap-5">
           {BENEFITS.map((b, i) => {
             const Icon = ICONS[b.icon];
             return (
-              <Reveal key={b.title} delay={i * 90}>
-                <article className="liquid-glass border border-white/20 rounded-2xl p-6 md:p-7 h-full !bg-white/[0.04]">
-                  <div className="flex items-center justify-between mb-10">
-                    <span className="grid place-items-center w-12 h-12 rounded-xl bg-brand text-black">
-                      <Icon size={22} />
-                    </span>
-                    <span className="text-sm text-white/30 tabular-nums">0{i + 1}</span>
-                  </div>
-                  <h3 className="text-xl md:text-2xl font-medium tracking-tight mb-2">{b.title}</h3>
-                  <p className="text-gray-300 leading-relaxed">{b.desc}</p>
-                </article>
+              <Reveal key={b.title} delay={i * 110} flip>
+                <TiltCard>
+                  <article className="p-6 md:p-7 h-full flex flex-col">
+                    <div className="flex items-start justify-between mb-10">
+                      <Layer z={60}>
+                        <span className="icon3d w-14 h-14">
+                          <Icon size={26} strokeWidth={2.2} />
+                        </span>
+                      </Layer>
+                      <Layer z={30}>
+                        <span className="num3d text-3xl font-medium tabular-nums" style={TRACK}>
+                          0{i + 1}
+                        </span>
+                      </Layer>
+                    </div>
+                    <Layer z={40}>
+                      <h3 className="text-xl md:text-2xl font-medium tracking-tight mb-2">{b.title}</h3>
+                    </Layer>
+                    <Layer z={22}>
+                      <p className="text-gray-300 leading-relaxed">{b.desc}</p>
+                    </Layer>
+                  </article>
+                </TiltCard>
               </Reveal>
             );
           })}
@@ -164,22 +177,34 @@ export function Services() {
           Nosotros nos encargamos de todo.
         </h2>
       </Reveal>
-      <div className="grid md:grid-cols-3 gap-px bg-white/10 rounded-2xl overflow-hidden border border-white/10">
+      <div className="grid md:grid-cols-3 gap-5">
         {SERVICES.map((s, i) => {
           const Icon = ICONS[s.icon];
           return (
-            <Reveal key={s.title} delay={i * 120} className="bg-black">
-              <article className="p-7 md:p-9 h-full">
-                <div className="flex items-center gap-4 mb-12">
-                  <span className="text-5xl font-light text-white/25 tabular-nums" style={TRACK}>
-                    0{i + 1}
-                  </span>
-                  <span className="h-px flex-1 bg-white/15" />
-                  <Icon size={26} className="text-brand" />
-                </div>
-                <h3 className="text-xl md:text-2xl font-medium tracking-tight mb-2">{s.title}</h3>
-                <p className="text-gray-300 leading-relaxed">{s.desc}</p>
-              </article>
+            <Reveal key={s.title} delay={i * 130} flip>
+              <TiltCard>
+                <article className="p-7 md:p-9 h-full flex flex-col">
+                  <div className="flex items-center gap-4 mb-12">
+                    <Layer z={70}>
+                      <span className="num3d block text-6xl md:text-7xl font-light tabular-nums leading-none" style={TRACK}>
+                        0{i + 1}
+                      </span>
+                    </Layer>
+                    <span className="line3d h-px flex-1 bg-white/15" />
+                    <Layer z={55}>
+                      <span className="icon3d w-12 h-12">
+                        <Icon size={24} strokeWidth={2.2} />
+                      </span>
+                    </Layer>
+                  </div>
+                  <Layer z={40}>
+                    <h3 className="text-xl md:text-2xl font-medium tracking-tight mb-2">{s.title}</h3>
+                  </Layer>
+                  <Layer z={22}>
+                    <p className="text-gray-300 leading-relaxed">{s.desc}</p>
+                  </Layer>
+                </article>
+              </TiltCard>
             </Reveal>
           );
         })}

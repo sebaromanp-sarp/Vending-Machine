@@ -194,3 +194,112 @@ section[id] {
   stroke: rgba(255, 199, 44, 0.75);
   stroke-width: 1;
 }
+
+/* ---------- Tarjetas 3D (Beneficios y Servicios) ---------- */
+.tilt-wrap {
+  perspective: 1100px;
+}
+.tilt {
+  position: relative;
+  transform-style: preserve-3d;
+  transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+  transition: transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
+  --lift: 0.3;
+}
+.tilt.is-active {
+  --lift: 1;
+  transition: transform 0.15s ease-out;
+}
+/* Cara de la tarjeta */
+.tilt-face {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  overflow: hidden;
+  background: linear-gradient(160deg, #15151b 0%, #0b0b0f 60%, #08080b 100%);
+  border: 1px solid rgba(255, 255, 255, 0.11);
+  box-shadow: 0 24px 40px -28px rgba(0, 0, 0, 0.9), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  transition: border-color 0.45s ease, box-shadow 0.45s ease;
+}
+.tilt.is-active .tilt-face {
+  border-color: rgba(255, 199, 44, 0.5);
+  box-shadow: 0 50px 70px -30px rgba(0, 0, 0, 0.95), 0 0 60px -18px rgba(255, 199, 44, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+/* Grosor: una placa detrás que asoma por el borde al inclinarse */
+.tilt-slab {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  transform: translateZ(-16px);
+  background: linear-gradient(135deg, #3a2a05, #0d0a03);
+  border: 1px solid rgba(255, 199, 44, 0.35);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+.tilt.is-active .tilt-slab {
+  opacity: 1;
+}
+/* Cuadrícula técnica que aparece al pasar el mouse */
+.tilt-grid {
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.07) 1px, transparent 1px);
+  background-size: 28px 28px;
+  -webkit-mask-image: radial-gradient(260px circle at var(--mx, 50%) var(--my, 50%), #000, transparent 70%);
+  mask-image: radial-gradient(260px circle at var(--mx, 50%) var(--my, 50%), #000, transparent 70%);
+  opacity: 0;
+  transition: opacity 0.45s ease;
+}
+/* Brillo que sigue al cursor */
+.tilt-glare {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(380px circle at var(--mx, 50%) var(--my, 50%), rgba(255, 199, 44, 0.18), rgba(255, 199, 44, 0) 55%);
+  opacity: 0;
+  transition: opacity 0.45s ease;
+}
+.tilt.is-active .tilt-grid,
+.tilt.is-active .tilt-glare {
+  opacity: 1;
+}
+/* Capas que se despegan en profundidad */
+.tz {
+  transform: translateZ(calc(var(--z, 0px) * var(--lift, 0.3)));
+  transition: transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+/* Ícono como bloque amarillo con volumen */
+.icon3d {
+  display: grid;
+  place-items: center;
+  border-radius: 14px;
+  color: #14141c;
+  background: linear-gradient(145deg, #ffe08a, #ffc72c 45%, #f0b000);
+  box-shadow: 0 6px 0 #a87400, 0 16px 26px -8px rgba(255, 199, 44, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  transition: transform 0.5s cubic-bezier(0.2, 0.7, 0.2, 1), box-shadow 0.5s ease;
+}
+.tilt.is-active .icon3d {
+  transform: rotate(-8deg) scale(1.06);
+  box-shadow: 0 9px 0 #a87400, 0 26px 34px -8px rgba(255, 199, 44, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+/* Números grandes con relieve */
+.num3d {
+  color: #26262e;
+  text-shadow: 1px 1px 0 #1d1d24, 2px 2px 0 #18181e, 3px 3px 0 #131318, 4px 4px 0 #0f0f13, 6px 8px 14px rgba(0, 0, 0, 0.7);
+  transition: color 0.45s ease, text-shadow 0.45s ease;
+}
+.tilt.is-active .num3d {
+  color: #ffc72c;
+  text-shadow: 1px 1px 0 #e0a800, 2px 2px 0 #c99400, 3px 3px 0 #b08000, 4px 4px 0 #946b00, 5px 5px 0 #7a5800, 8px 12px 22px rgba(255, 199, 44, 0.35);
+}
+.tilt .line3d {
+  transform-origin: 0 50%;
+  transition: background-color 0.45s ease, transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.tilt.is-active .line3d {
+  background-color: rgba(255, 199, 44, 0.6);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tilt, .tz, .icon3d { transition: none !important; }
+}
