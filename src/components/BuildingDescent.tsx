@@ -34,7 +34,7 @@ const STEPS: { from: number; eyebrow: string; title: string; text: string; more?
   },
   { from: 0.5, eyebrow: 'A pasos del ascensor', title: 'Snacks, bebidas y abarrotes esenciales, las 24 horas.', text: '' },
   {
-    from: 0.76,
+    from: 0.74,
     eyebrow: 'Lobby',
     title: 'Hola, somos PuntoMatica y nos gustaría ser tu nuevo vecino.',
     text: 'Instalamos mini-markets automáticos en edificios residenciales del Gran Concepción.',
@@ -563,6 +563,25 @@ function Words({ text }: { text: string }) {
   );
 }
 
+/** Visor del ascensor: piso actual (o L de lobby). */
+function FloorBadge({ floor, className = '' }: { floor: number; className?: string }) {
+  return (
+    <div className={`items-center gap-2 lg:gap-3 liquid-glass rounded-xl pl-2 pr-3 py-1 lg:pl-3 lg:pr-4 lg:py-2 ${className}`}>
+      <span className="relative grid place-items-center w-6 h-8 lg:w-7 lg:h-9 text-brand">
+        {floor === 0 ? <span className="w-2.5 h-2.5 rounded-full bg-brand shadow-[0_0_12px_rgba(255,199,44,0.9)]" /> : <ChevronDown size={20} className="anim-chevron" />}
+      </span>
+      <span key={floor} className="anim-rise text-2xl lg:text-4xl font-light tabular-nums w-[1.4em] text-center" style={{ letterSpacing: '-0.04em' }}>
+        {floor === 0 ? 'L' : floor}
+      </span>
+      <span className="text-[10px] leading-tight tracking-[0.22em] text-gray-300">
+        {floor === 0 ? 'LOBBY' : 'PISO'}
+        <br />
+        <span className="text-white/40">23:47</span>
+      </span>
+    </div>
+  );
+}
+
 // ---------------------------------------------------------------------------
 // Sección
 // ---------------------------------------------------------------------------
@@ -579,6 +598,8 @@ export default function BuildingDescent() {
   const sky = useRef<HTMLDivElement>(null);
   const marker = useRef<HTMLDivElement>(null);
   const textBox = useRef<HTMLDivElement>(null);
+  const shade = useRef<HTMLDivElement>(null);
+  const exit = useRef<HTMLDivElement>(null);
   const refs = useMemo<SceneRefs>(() => ({ world, cabin, cable, idle, wave }), []);
 
   const [step, setStep] = useState(0);
@@ -596,17 +617,20 @@ export default function BuildingDescent() {
       const st = stage.current;
       if (!st || !world.current) return;
       const vw = st.clientWidth;
-      const vh = st.clientHeight;
       const wide = vw >= 1024;
+      // En celular se encuadra en la parte realmente visible (sin la barra del navegador)
+      const vh = wide ? st.clientHeight : Math.min(st.clientHeight, window.innerHeight || st.clientHeight);
 
-      // Tres momentos: plano general de la azotea, descenso, llegada al lobby
+      // Tres momentos: plano general de la azotea, descenso, llegada al lobby.
+      // La llegada termina antes del final del recorrido: el último tramo queda quieto,
+      // para que la sección se suelte sin que la escena siga moviéndose.
       const intro = 1 - easeOut(span(p, 0, 0.11));
-      const q = easeInOut(span(p, 0.05, 0.86));
-      const outro = easeInOut(span(p, 0.84, 1));
+      const q = easeInOut(span(p, 0.05, 0.82));
+      const outro = easeInOut(span(p, 0.8, 0.94));
       const cabinY = lerp(CAB_TOP, CAB_END, q);
 
       const base = wide ? Math.min(1.05, (vw * 0.4) / 560, vh / 800) : Math.min(0.85, (vw * 0.84) / 560);
-      const zoom = base * (1 - (wide ? 0.36 : 0.2) * intro + (wide ? 0.2 : 0.06) * outro);
+      let zoom = base * (1 - (wide ? 0.36 : 0.2) * intro + (wide ? 0.2 : 0) * outro);
       const ry = -30 - 9 * intro + 11 * q + 7 * outro;
       const rx = -4 - 10 * intro - 3 * outro;
       const fx = lerp(0, -70, outro);
@@ -618,8 +642,13 @@ export default function BuildingDescent() {
       } else {
         // En celular el texto va arriba: la escena se acomoda en el espacio libre que queda debajo
         const textBottom = textBox.current ? textBox.current.getBoundingClientRect().bottom - st.getBoundingClientRect().top : vh * 0.5;
-        const descent = Math.max(vh * 0.64, textBottom + (vh - textBottom) * 0.42);
-        cy = lerp(descent, Math.max(descent, vh - 200 * zoom), outro);
+        const free = Math.max(160, vh - textBottom);
+        const descent = Math.max(vh * 0.64, textBottom + free * 0.42);
+        // Al llegar, el lobby completo (del letrero a la vereda, ~330 px del mundo) cabe en ese espacio
+        const arrive = Math.min(base * 1.3, Math.max(base * 0.7, (free - 40) / 330));
+        zoom = lerp(zoom, arrive, outro);
+        cy = lerp(descent, textBottom + free * 0.52 + 12 * zoom, outro);
+        if (shade.current) shade.current.style.height = `${Math.round(textBottom + 70)}px`;
       }
 
       st.style.perspectiveOrigin = `${cx.toFixed(1)}px ${cy.toFixed(1)}px`;
@@ -635,9 +664,11 @@ export default function BuildingDescent() {
       if (near.current) near.current.style.transform = `translate3d(0, ${lerp(88, 0, q).toFixed(2)}%, 0)`;
       if (sky.current) sky.current.style.transform = `translate3d(0, ${lerp(0, -20, q).toFixed(2)}%, 0)`;
       if (marker.current) marker.current.style.transform = `translateY(${(q * 100).toFixed(2)}%)`;
+      // Al final la parte de abajo se funde a negro, igual que el inicio de la sección siguiente
+      if (exit.current) exit.current.style.opacity = outro.toFixed(3);
 
       // La mascota saluda al llegar
-      const arrived = p > 0.88;
+      const arrived = p > 0.86;
       if (idle.current) idle.current.style.opacity = arrived ? '0' : '1';
       if (wave.current) wave.current.style.opacity = arrived ? '1' : '0';
 
@@ -701,32 +732,29 @@ export default function BuildingDescent() {
         {/* Luz y contraste para el texto */}
         <div className="absolute inset-0 pointer-events-none shadow-[inset_0_0_240px_rgba(0,0,0,0.75)]" />
         <div className="hidden lg:block absolute inset-y-0 left-0 w-[58%] pointer-events-none bg-gradient-to-r from-[#03040a] via-[#03040a]/85 to-transparent" />
+        {/* En celular, oscurece solo la franja del texto (su alto se ajusta al texto) */}
         <div
-          className="lg:hidden absolute inset-x-0 top-0 h-[70%] pointer-events-none"
-          style={{ background: 'linear-gradient(to bottom, #03040a 0%, rgba(3,4,10,0.94) 58%, rgba(3,4,10,0.6) 80%, rgba(3,4,10,0) 100%)' }}
+          ref={shade}
+          className="lg:hidden absolute inset-x-0 top-0 h-[55%] pointer-events-none"
+          style={{ background: 'linear-gradient(to bottom, #03040a 0%, rgba(3,4,10,0.92) calc(100% - 90px), rgba(3,4,10,0) 100%)' }}
+        />
+        <div
+          ref={exit}
+          className="absolute inset-x-0 bottom-0 h-[20%] pointer-events-none bg-gradient-to-t from-black via-black/70 to-transparent opacity-0"
         />
 
-        {/* Indicador del ascensor + relato */}
-        <div className="absolute left-6 right-6 top-24 md:left-12 lg:left-16 lg:right-auto lg:top-1/2 lg:-translate-y-1/2 lg:w-[40%] xl:w-[37%]">
-          <div className="inline-flex items-center gap-3 liquid-glass rounded-xl pl-3 pr-4 py-2 mb-4 md:mb-8">
-            <span className="relative grid place-items-center w-7 h-9 text-brand">
-              {floor === 0 ? <span className="w-2.5 h-2.5 rounded-full bg-brand shadow-[0_0_12px_rgba(255,199,44,0.9)]" /> : <ChevronDown size={22} className="anim-chevron" />}
-            </span>
-            <span key={floor} className="anim-rise text-3xl md:text-4xl font-light tabular-nums w-[1.4em] text-center" style={{ letterSpacing: '-0.04em' }}>
-              {floor === 0 ? 'L' : floor}
-            </span>
-            <span className="text-[10px] leading-tight tracking-[0.22em] text-gray-300">
-              {floor === 0 ? 'LOBBY' : 'PISO'}
-              <br />
-              <span className="text-white/40">23:47</span>
-            </span>
-          </div>
+        {/* Indicador del ascensor: en celular va abajo, como el visor de una cabina */}
+        <FloorBadge floor={floor} className="inline-flex lg:hidden absolute left-4 top-[calc(100svh-4.25rem)]" />
+
+        {/* Relato */}
+        <div className="absolute left-6 right-6 top-[5.25rem] md:top-24 md:left-12 lg:left-16 lg:right-auto lg:top-1/2 lg:-translate-y-1/2 lg:w-[40%] xl:w-[37%]">
+          <FloorBadge floor={floor} className="hidden lg:inline-flex mb-8" />
 
           <div ref={textBox} className="grid">
             {STEPS.map((s, i) => (
               <div key={i} className={`step col-start-1 row-start-1 self-start ${i === step ? 'is-on' : i < step ? 'is-out' : ''}`}>
                 <p className="fade text-xs md:text-sm uppercase tracking-[0.2em] text-brand mb-3 md:mb-4">{s.eyebrow}</p>
-                <h2 className="text-[1.65rem] min-[360px]:text-[2rem] leading-[1.06] md:text-5xl xl:text-6xl font-normal md:leading-[1.03]" style={{ letterSpacing: '-0.04em' }}>
+                <h2 className="text-[1.5rem] min-[360px]:text-[1.75rem] sm:text-[2rem] leading-[1.08] md:text-5xl xl:text-6xl font-normal md:leading-[1.03]" style={{ letterSpacing: '-0.04em' }}>
                   <Words text={s.title} />
                 </h2>
                 {s.text && (

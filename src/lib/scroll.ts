@@ -25,28 +25,38 @@ export function useScrollProgress(ref: RefObject<HTMLElement>, onProgress: (p: n
     const el = ref.current;
     if (!el) return;
     let reduce = false;
+    let touch = false;
     try {
       reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      touch = window.matchMedia('(pointer: coarse)').matches;
     } catch {
       /* sin soporte: se anima normalmente */
     }
+    // En pantallas táctiles el scroll ya viene suavizado por el sistema: un suavizado
+    // largo encima hace que la escena vaya atrasada respecto del dedo.
+    const smooth = touch ? Math.min(tau, 40) : tau;
+    // El recorrido termina cuando el hijo `sticky` deja de estar fijo. Se mide con su
+    // alto (no con window.innerHeight) para que la barra del navegador del celular, que
+    // aparece y desaparece, no corra el final del recorrido.
+    const pin = el.firstElementChild as HTMLElement | null;
+    const pinned = !!pin && getComputedStyle(pin).position === 'sticky';
     let raf = 0;
     let cur = -1;
     let last = 0;
 
     const target = () => {
       const r = el.getBoundingClientRect();
-      const total = r.height - window.innerHeight;
+      const total = r.height - (pinned ? pin!.offsetHeight : window.innerHeight);
       return total > 0 ? clamp(-r.top / total) : 0;
     };
     const frame = (now: number) => {
       raf = 0;
       const t = target();
-      if (cur < 0 || !tau || reduce) {
+      if (cur < 0 || !smooth || reduce) {
         cur = t;
       } else {
         const dt = last ? Math.min(64, now - last) : 16;
-        cur += (t - cur) * (1 - Math.exp(-dt / tau));
+        cur += (t - cur) * (1 - Math.exp(-dt / smooth));
         if (Math.abs(t - cur) < 0.0003) cur = t;
       }
       last = now;
