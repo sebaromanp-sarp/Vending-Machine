@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mascota PuntoMatica — propuesta</title>
+<style>
+  body { margin: 0; font-family: 'Poppins', 'Segoe UI', Helvetica, Arial, sans-serif; background: #14141C; color: #F6F6F3; }
+  main { max-width: 1100px; margin: 0 auto; padding: 24px 16px 48px; }
+  h1 { font-size: 22px; margin: 0 0 4px; }
+  p { margin: 0 0 20px; color: #A5A5B2; font-size: 14px; }
+  .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 14px; }
+  @media (max-width: 760px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+  figure { margin: 0; border-radius: 16px; padding: 10px 10px 12px; text-align: center; }
+  .dark figure { background: #1E1E29; }
+  .light figure { background: #F6F6F3; color: #14141C; }
+  img { width: 100%; height: auto; display: block; }
+  figcaption { font-size: 13px; font-weight: 600; margin-top: 4px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Mascota PuntoMatica — propuesta</h1>
+  <p>Arriba sobre el fondo oscuro del sitio, abajo sobre fondo claro.</p>
+  <div class="grid dark">
+    <figure><img src="puntomatica-frontal.svg" alt="Frontal"><figcaption>Frontal</figcaption></figure>
+    <figure><img src="puntomatica-costado-derecho.svg" alt="Costado derecho"><figcaption>Costado derecho</figcaption></figure>
+    <figure><img src="puntomatica-costado-izquierdo.svg" alt="Costado izquierdo"><figcaption>Costado izquierdo</figcaption></figure>
+    <figure><img src="puntomatica-saludando.svg" alt="Saludando"><figcaption>Saludando</figcaption></figure>
+  </div>
+  <div class="grid light">
+    <figure><img src="puntomatica-frontal.svg" alt="Frontal"><figcaption>Frontal</figcaption></figure>
+    <figure><img src="puntomatica-costado-derecho.svg" alt="Costado derecho"><figcaption>Costado derecho</figcaption></figure>
+    <figure><img src="puntomatica-costado-izquierdo.svg" alt="Costado izquierdo"><figcaption>Costado izquierdo</figcaption></figure>
+    <figure><img src="puntomatica-saludando.svg" alt="Saludando"><figcaption>Saludando</figcaption></figure>
+  </div>
+</main>
+</body>
+</html>

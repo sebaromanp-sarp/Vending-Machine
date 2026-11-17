@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+  html { scroll-behavior:smooth; }
+  body { overflow-x:hidden; }
+  section[id], footer[id] { scroll-margin-top:76px; }
+  body { margin:0; font-family:'Poppins',Helvetica,Arial,sans-serif; background:#14141C; }
+  a { color:#FFC72C; text-decoration:none; }
+  a:hover { color:#E6A800; }
+  @keyframes pm-bob { 0%,100% { transform: translateY(0) rotate(0deg); } 25% { transform: translateY(-3px) rotate(-1.5deg); } 50% { transform: translateY(-4.5px) rotate(0deg); } 75% { transform: translateY(-2px) rotate(1.5deg); } }
+  @keyframes pm-blink { 0%,88%,100% { transform: scaleY(1); } 92%,96% { transform: scaleY(0.08); } }
+  @keyframes pm-wave { 0%,58%,100% { transform: rotate(6deg); } 66% { transform: rotate(-52deg); } 72% { transform: rotate(-30deg); } 78% { transform: rotate(-52deg); } 84% { transform: rotate(-30deg); } 90% { transform: rotate(-48deg); } }
+  @keyframes pm-antenna { 0%,100% { transform: rotate(-8deg); } 50% { transform: rotate(10deg); } }
+  @keyframes pm-glow { 0%,100% { opacity: 0.30; transform: scale(1); } 50% { opacity: 0.6; transform: scale(1.14); } }
+  @media (prefers-reduced-motion: reduce) { [data-pm-anim] { animation: none !important; } }
+  [data-cat-mascota] { position:absolute; left:max(-112px, calc(8px - max(24px, (100vw - 1100px) / 2))); bottom:-4px; width:160px; height:160px; pointer-events:none; z-index:2; }
+  [data-maq-mascota] { position:absolute; left:calc(50% + 74px); bottom:8px; width:150px; height:150px; pointer-events:none; }
+  [data-hdr-root] { transition: padding 260ms ease, background 260ms ease, border-color 260ms ease; }
+  [data-hdr-root] > div { transition: max-width 300ms ease, background 300ms ease, border-radius 300ms ease, box-shadow 300ms ease, padding 260ms ease, border-color 300ms ease; border: 1px solid transparent; }
+  [data-hdr-root][data-float="1"] { background: transparent !important; border-bottom-color: transparent !important; padding: 10px 16px; }
+  [data-hdr-root][data-float="1"] > div { max-width: 1060px; background: rgba(24,24,33,0.88); border-radius: 999px; border-color: #33333F; box-shadow: 0 14px 38px rgba(0,0,0,0.45); padding: 10px 14px 10px 22px; }
+  [data-hdr-root][data-float="1"] [data-nav] { font-size: 13px; }
+  [data-hdr-root][data-active="inicio"] [data-nav] a[href="#inicio"] { color:#FFC72C !important; }
+  [data-hdr-root][data-active="nosotros"] [data-nav] a[href="#nosotros"] { color:#FFC72C !important; }
+  [data-hdr-root][data-active="beneficios"] [data-nav] a[href="#beneficios"] { color:#FFC72C !important; }
+  [data-hdr-root][data-active="catalogo"] [data-nav] a[href="#catalogo"] { color:#FFC72C !important; }
+  [data-hdr-root][data-active="servicios"] [data-nav] a[href="#servicios"] { color:#FFC72C !important; }
+  [data-hdr-root][data-active="maquinas"] [data-nav] a[href="#maquinas"] { color:#FFC72C !important; }
+  [data-hdr-root][data-active="contacto"] [data-nav] a[href="#contacto"] { color:#FFC72C !important; }
+  [data-hdr-root][data-float="1"] [data-cta] { padding: 10px 18px; }
+  @media (max-width: 1060px) {
+    [data-hdr-root][data-float="1"] > div { border-radius: 22px; padding: 10px 14px; }
+  }
+  @media (max-width: 1060px) {
+    [data-burger] { display: flex !important; }
+    [data-nav] { display: none !important; width: 100%; order: 3; flex-direction: column; gap: 16px; padding: 10px 0 4px; }
+    [data-hdr][data-open="1"] [data-nav] { display: flex !important; }
+    [data-cta] { display: none !important; }
+    [data-hdr][data-open="1"] [data-cta] { display: block !important; width: 100%; order: 4; text-align: center; }
+    [data-hero-mascota], [data-hero-note] { display: none !important; }
+    [data-corner] { width: 130px !important; height: 100px !important; }
+    [data-hero-inner] { padding: 68px 20px 0 !important; gap: 24px !important; }
+    [data-hero-copy] { padding-bottom: 40px !important; }
+    [data-hero-img] { justify-content: center !important; width: 100%; }
+    [data-footer-mascota] { margin-top: -60px !important; }
+    [data-espirales] { display: none !important; }
+    [data-cat-mascota] { left:-16px; bottom:-2px; width:116px; height:116px; }
+    [data-maq-mascota] { left:calc(50% + 52px); width:112px; height:112px; }
+  }
+</style>
+</helmet>
+
+<main style="background:#14141C; color:#fff">
+
+  <header data-hdr-root="1" data-float="{{ floatAttr }}" data-active="{{ activeSection }}" style="position:sticky; top:0; z-index:50; background:rgba(20,20,28,0.94); borderBottom:1px solid #26262F; backdropFilter:blur(8px)">
+    <div data-hdr="1" data-open="{{ menuAttr }}" style="maxWidth:1200px; margin:0 auto; padding:14px 24px; display:flex; alignItems:center; gap:24px; justifyContent:space-between; flexWrap:wrap">
+      <div style="display:flex; alignItems:center; gap:10px">
+        <svg width="33" height="40" viewBox="0 0 132 160" aria-hidden="true" style="overflow:visible; flexShrink:0">
+          <ellipse cx="60" cy="70" rx="58" ry="62" fill="#FFC72C" data-pm-anim="1" style="animation:pm-glow 3.6s ease-in-out infinite; transformOrigin:60px 70px; opacity:0.3; filter:blur(14px)"></ellipse>
+          <g data-pm-anim="1" style="animation:pm-bob 3.6s ease-in-out infinite; transformOrigin:60px 150px">
+            <g data-pm-anim="1" style="animation:pm-wave 3.6s ease-in-out infinite; transformOrigin:113px 70px">
+              <rect x="107" y="64" width="12" height="40" rx="6" fill="#E0A100"></rect>
+              <circle cx="113" cy="106" r="9" fill="#E0A100"></circle>
+            </g>
+            <rect x="36" y="128" width="12" height="22" rx="6" fill="#E0A100"></rect>
+            <rect x="72" y="128" width="12" height="22" rx="6" fill="#E0A100"></rect>
+            <rect x="26" y="144" width="30" height="13" rx="6.5" fill="#C48A00"></rect>
+            <rect x="64" y="144" width="30" height="13" rx="6.5" fill="#C48A00"></rect>
+            <rect x="10" y="4" width="100" height="132" rx="20" fill="#FFC72C"></rect>
+            <rect x="20" y="14" width="80" height="52" rx="12" fill="#1E1E29"></rect>
+            <g data-pm-anim="1" style="animation:pm-blink 3.6s ease-in-out infinite; transformOrigin:45px 34px">
+              <rect x="40" y="27" width="10" height="15" rx="5" fill="#FFC72C"></rect>
+            </g>
+            <g data-pm-anim="1" style="animation:pm-blink 3.6s ease-in-out infinite; transformOrigin:75px 34px">
+              <rect x="70" y="27" width="10" height="15" rx="5" fill="#FFC72C"></rect>
+            </g>
+            <path d="M47 50 Q60 60 73 50" stroke="#FFC72C" stroke-width="5" fill="none" stroke-linecap="round"></path>
+            <rect x="20" y="74" width="52" height="34" rx="7" fill="#1E1E29"></rect>
+            <circle cx="33" cy="91" r="5.5" fill="#E5484D"></circle>
+            <circle cx="46" cy="91" r="5.5" fill="#46A758"></circle>
+            <circle cx="59" cy="91" r="5.5" fill="#3E63DD"></circle>
+            <rect x="80" y="74" width="20" height="34" rx="6" fill="#E6A800"></rect>
+            <rect x="87" y="82" width="6" height="18" rx="3" fill="#14141C"></rect>
+            <rect x="20" y="114" width="80" height="14" rx="7" fill="#1E1E29"></rect>
+          </g>
+        </svg>
+        <span style="fontWeight:700; fontSize:17px; letterSpacing:-0.2px">PuntoMatica</span>
+      </div>
+      <button type="button" data-burger="1" aria-label="Abrir menú" aria-expanded="{{ menuOpen }}" onClick="{{ toggleMenu }}" style="display:none; alignItems:center; justifyContent:center; width:44px; height:44px; borderRadius:10px; border:1px solid #33333F; background:transparent; cursor:pointer; padding:0; order:2">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FFC72C" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"></path></svg>
+      </button>
+      <nav aria-label="Principal" data-nav="1" style="display:flex; gap:20px; flexWrap:nowrap; fontSize:14px; color:#C9C9D2; fontWeight:500">
+        <a href="#inicio" onClick="{{ closeMenu }}" style="color:#C9C9D2">Inicio</a>
+        <a href="#nosotros" onClick="{{ closeMenu }}" style="color:#C9C9D2">Nosotros</a>
+        <a href="#beneficios" onClick="{{ closeMenu }}" style="color:#C9C9D2">Beneficios</a>
+        <a href="#catalogo" onClick="{{ closeMenu }}" style="color:#C9C9D2">Catálogo</a>
+        <a href="#servicios" onClick="{{ closeMenu }}" style="color:#C9C9D2">Servicios</a>
+        <a href="#maquinas" onClick="{{ closeMenu }}" style="color:#C9C9D2">Máquinas</a>
+        <a href="#contacto" onClick="{{ closeMenu }}" style="color:#C9C9D2">Contacto</a>
+      </nav>
+      <a href="#contacto" data-cta="1" onClick="{{ closeMenu }}" style="background:#FFC72C; color:#14141C; fontWeight:700; fontSize:14px; padding:12px 20px; borderRadius:10px; whiteSpace:nowrap" style-hover="background:#E6A800">Solicitar Evaluación</a>
+    </div>
+  </header>
+
+  <section id="inicio" style="position:relative; background:#0F0F16; paddingBottom:0">
+    <div style="position:absolute; inset:0; background:repeating-linear-gradient(135deg,#22222D 0 14px,#1A1A24 14px 28px)"></div>
+    <div style="position:absolute; inset:0; background:linear-gradient(90deg,rgba(15,15,22,0.96) 0%,rgba(15,15,22,0.86) 45%,rgba(15,15,22,0.55) 100%)"></div>
+    <div data-corner="1" style="position:absolute; top:0; right:0; width:260px; height:200px; background:#FFC72C; opacity:0.9; clipPath:polygon(100% 0,100% 100%,0 0)"></div>
+    <div data-hero-note="1" style="position:absolute; left:32px; bottom:120px; fontFamily:ui-monospace,monospace; fontSize:11px; color:#5A5A68; letterSpacing:1px">[ FOTO: HALL / CONSERJERÍA DE EDIFICIO ]</div>
+
+    <div data-hero-inner="1" style="position:relative; maxWidth:1200px; margin:0 auto; padding:96px 24px 0; display:flex; gap:40px; alignItems:flex-end; flexWrap:wrap">
+      <div data-hero-copy="1" style="flex:1 1 420px; maxWidth:640px; paddingBottom:120px">
+        <p style="color:#FFC72C; fontWeight:700; fontSize:13px; letterSpacing:2.4px; margin:0 0 18px">PUNTO DE CONVENIENCIA SMART 24/7</p>
+        <h1 style="fontSize:clamp(38px,5.2vw,64px); lineHeight:1.03; fontWeight:800; letterSpacing:-1.6px; margin:0 0 22px; textWrap:balance">Un mini-market 24/7 en tu edificio</h1>
+        <p style="fontSize:18px; lineHeight:1.6; color:#C4C4CE; margin:0 0 36px; maxWidth:560px; textWrap:pretty">Transformamos los espacios comunes de tu edificio en un micro-mercado de conveniencia disponible 24/7 — instalación, reposición y mantención 100% a nuestro cargo.</p>
+        <div style="display:flex; gap:16px; flexWrap:wrap">
+          <div style="flex:1 1 240px; background:#1E1E29; border:1px solid #2E2E3B; borderRadius:14px; padding:22px 24px">
+            <p style="margin: 0 0 8px; fontsize: 12px; letterspacing: 1.6px; color: #8A8A96; fontweight: 700; text-align: center; font-weight: 700">CONTÁCTANOS</p>
+            <p style="margin: 0; fontsize: 22px; fontweight: 700; text-align: center; font-weight: 700">+56 9 9558 4166</p>
+          </div>
+          <div style="flex:1 1 240px; background:#FFC72C; color:#14141C; borderRadius:14px; padding:22px 24px">
+            <p style="margin: 0 0 8px; fontsize: 12px; letterspacing: 1.6px; fontweight: 800; text-align: center; font-weight: 700">YO QUIERO UNO</p>
+            <p style="margin:0; fontSize:14px; lineHeight:1.5; fontWeight:500">Si quieres que PuntoMatica esté en tu edificio, solo contáctanos.</p>
+          </div>
+        </div>
+      </div>
+
+      <div data-hero-img="1" style="flex:0 1 380px; position:relative; display:flex; justifyContent:flex-end; alignItems:flex-end">
+        <sc-if value="{{ mascotas }}" hint-placeholder-val="{{ true }}">
+          <div data-hero-mascota="1" style="position:absolute; left:-150px; bottom:340px; width:220px; height:220px; pointerEvents:none; zIndex:2">
+            <img src="mascota-v2/puntomatica-saludando.svg" alt="" data-pm-anim="1" style="width:100%; height:100%; display:block; animation:pm-bob 3.6s ease-in-out infinite; transformOrigin:50% 90%">
+          </div>
+        </sc-if>
+        <img src="assets/maquina-slim.png" alt="Máquina expendedora PuntoMatica, modelo Slim / Estándar" style="height:clamp(340px,40vw,520px); width:auto; maxWidth:100%; display:block; marginBottom:-70px; filter:drop-shadow(0 30px 50px rgba(0,0,0,0.55))">
+      </div>
+    </div>
+
+    <div style="position:relative; background:#1E1E29; borderTop:1px solid #2E2E3B; marginTop:0">
+      <div style="maxWidth:1200px; margin:0 auto; padding:40px 24px; display:grid; gridTemplateColumns:repeat(auto-fit,minmax(220px,1fr)); gap:32px; justifyItems:center; textAlign:center">
+        <div style="maxWidth:280px">
+          <p style="margin:0; fontSize:40px; fontWeight:800; color:#FFC72C; letterSpacing:-1.5px; lineHeight:1.1">$0</p>
+          <p style="margin:8px 0 0; fontSize:14px; color:#A5A5B2; lineHeight:1.5">Costo e inversión para la comunidad</p>
+        </div>
+        <div style="maxWidth:280px">
+          <p style="margin:0; fontSize:40px; fontWeight:800; color:#FFC72C; letterSpacing:-1.5px; lineHeight:1.1">24/7</p>
+          <p style="margin:8px 0 0; fontSize:14px; color:#A5A5B2; lineHeight:1.5">Disponibilidad de abarrotes y snacks</p>
+        </div>
+        <div style="maxWidth:280px">
+          <p style="margin:0; fontSize:40px; fontWeight:800; color:#FFC72C; letterSpacing:-1.5px; lineHeight:1.1">&lt;24h</p>
+          <p style="margin:8px 0 0; fontSize:14px; color:#A5A5B2; lineHeight:1.5">Soporte técnico presencial</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="nosotros" style="display:grid; gridTemplateColumns:repeat(auto-fit,minmax(340px,1fr))">
+    <div style="background:#FFC72C; color:#14141C; padding:clamp(48px,6vw,88px) clamp(28px,5vw,72px)">
+      
+      <h2 style="margin:0 0 24px; fontSize:clamp(28px,3.4vw,44px); lineHeight:1.1; fontWeight:800; letterSpacing:-1.2px; textWrap:balance">Hola, somos PuntoMatica y nos gustaría ser tu nuevo vecino</h2>
+      <p style="margin:0; fontSize:17px; lineHeight:1.65; maxWidth:560px; textWrap:pretty">Acercamos la conveniencia a los lugares donde las personas viven y trabajan. Instalamos mini-markets automáticos en edificios residenciales del Gran Concepción, ofreciendo acceso a snacks, bebidas y abarrotes esenciales disponibles 24/7. Nos encargamos de la instalación, abastecimiento y mantenimiento del servicio, entregando una solución moderna y práctica para tu comunidad.</p>
+    </div>
+    <div data-espirales="1" style="position:relative; minHeight:420px; overflow:hidden">
+      <img src="assets/espirales.png" alt="Espirales de una máquina expendedora PuntoMatica en operación" style="position:absolute; inset:0; width:100%; height:100%; objectFit:cover; display:block">
+    </div>
+  </section>
+
+  <section id="beneficios" style="background:#F6F6F3; color:#14141C; padding:clamp(56px,7vw,104px) 24px">
+    <div style="maxWidth:1200px; margin:0 auto; display:flex; gap:clamp(32px,5vw,72px); alignItems:center; flexWrap:wrap">
+      <div style="flex:0 1 360px; display:flex; flexDirection:column; alignItems:center; gap:18px">
+        <div style="position:relative; width:100%; maxWidth:400px; aspectRatio:640/501; transition:transform 260ms cubic-bezier(0.4,0,0.2,1)" style-hover="transform:scale(1.08)">
+          <img src="assets/maquina-iso.jpg" alt="Máquina expendedora de snacks vista en perspectiva" style="position:absolute; inset:0; width:100%; height:100%; objectFit:contain; display:block; mixBlendMode:multiply; transition:opacity 700ms ease; opacity:{{ op0 }}">
+          <img src="assets/maquina-iso-2.jpg" alt="Máquina expendedora de bebidas azul" style="position:absolute; inset:0; width:100%; height:100%; objectFit:contain; display:block; mixBlendMode:multiply; transition:opacity 700ms ease; opacity:{{ op1 }}">
+          <img src="assets/maquina-iso-3.jpg" alt="Máquina expendedora de snacks plateada" style="position:absolute; inset:0; width:100%; height:100%; objectFit:contain; display:block; mixBlendMode:multiply; transition:opacity 700ms ease; opacity:{{ op2 }}">
+          <img src="assets/maquina-iso-4.jpg" alt="Máquina expendedora de bebidas roja" style="position:absolute; inset:0; width:100%; height:100%; objectFit:contain; display:block; mixBlendMode:multiply; transition:opacity 700ms ease; opacity:{{ op3 }}">
+        </div>
+        <div role="tablist" aria-label="Fotos de máquinas" style="display:flex; gap:9px">
+          <sc-for list="{{ slides }}" as="s" hint-placeholder-count="4">
+            <button type="button" aria-label="{{ s.alt }}" aria-selected="{{ s.on }}" onClick="{{ s.go }}" style="{{ s.dotStyle }}"></button>
+          </sc-for>
+        </div>
+      </div>
+      <div style="flex:1 1 460px">
+        <h2 style="margin:0 0 8px; fontSize:clamp(30px,3.6vw,46px); fontWeight:800; letterSpacing:-1.3px; color:#14141C">Beneficios</h2>
+        <p style="margin:0 0 36px; color:#6B6B76; fontSize:16px">Lo que gana tu comunidad al sumar el servicio.</p>
+        <div style="display:flex; flexDirection:column; gap:24px">
+          <div style="display:flex; gap:18px; alignItems:flex-start">
+            <span style="flexShrink:0; width:56px; height:56px; borderRadius:14px; background:#fff; border:1px solid #E4E4E2; display:flex; alignItems:center; justifyContent:center">
+              <img src="assets/ic-billetera.png" alt="" style="width:34px; height:34px; objectFit:contain; display:block">
+            </span>
+            <div>
+              <h3 style="margin:0 0 6px; fontSize:18px; fontWeight:700">Cero Costo e Inversión</h3>
+              <p style="margin:0; color:#6B6B76; fontSize:15px; lineHeight:1.6">Instalación, consumo eléctrico, reposición y soporte técnico corren 100% por nuestra cuenta.</p>
+            </div>
+          </div>
+          <div style="display:flex; gap:18px; alignItems:flex-start">
+            <span style="flexShrink:0; width:56px; height:56px; borderRadius:14px; background:#fff; border:1px solid #E4E4E2; display:flex; alignItems:center; justifyContent:center">
+              <img src="assets/ic-edificio.png" alt="" style="width:34px; height:34px; objectFit:contain; display:block">
+            </span>
+            <div>
+              <h3 style="margin:0 0 6px; fontSize:18px; fontWeight:700">Aporte a la Comunidad</h3>
+              <p style="margin:0; color:#6B6B76; fontSize:15px; lineHeight:1.6">Aportamos un porcentaje de las ventas o un monto fijo mensual al Fondo de Reserva del edificio.</p>
+            </div>
+          </div>
+          <div style="display:flex; gap:18px; alignItems:flex-start">
+            <span style="flexShrink:0; width:56px; height:56px; borderRadius:14px; background:#fff; border:1px solid #E4E4E2; display:flex; alignItems:center; justifyContent:center">
+              <img src="assets/ic-reloj.png" alt="" style="width:34px; height:34px; objectFit:contain; display:block">
+            </span>
+            <div>
+              <h3 style="margin:0 0 6px; fontSize:18px; fontWeight:700">Descongestión en Conserjería</h3>
+              <p style="margin:0; color:#6B6B76; fontSize:15px; lineHeight:1.6">Disminuye el flujo de repartidores externos al contar con alimentos y snacks a pasos del ascensor.</p>
+            </div>
+          </div>
+          <div style="display:flex; gap:18px; alignItems:flex-start">
+            <span style="flexShrink:0; width:56px; height:56px; borderRadius:14px; background:#fff; border:1px solid #E4E4E2; display:flex; alignItems:center; justifyContent:center">
+              <img src="assets/ic-mapa.png" alt="" style="width:34px; height:34px; objectFit:contain; display:block">
+            </span>
+            <div>
+              <h3 style="margin:0 0 6px; fontSize:18px; fontWeight:700">Soporte Local en Concepción</h3>
+              <p style="margin:0; color:#6B6B76; fontSize:15px; lineHeight:1.6">Monitoreo remoto de stock y atención técnica presencial en menos de 24 horas.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="catalogo" style="background:#14141C; padding:clamp(56px,7vw,104px) 24px">
+    <div style="maxWidth:1100px; margin:0 auto; textAlign:center">
+      <h2 style="margin:0 0 10px; fontSize:clamp(30px,3.6vw,46px); fontWeight:800; letterSpacing:-1.3px">Catálogo Adaptable</h2>
+      <p style="margin:0 0 40px; color:#A5A5B2; fontSize:17px">Abarrote esencial + Snack &amp; Bebidas</p>
+      <div role="tablist" aria-label="Categorías del catálogo" style="display:flex; gap:10px; justifyContent:center; flexWrap:wrap; marginBottom:44px">
+        <sc-for list="{{ tabs }}" as="tab" hint-placeholder-count="4">
+          <button type="button" role="tab" aria-selected="{{ tab.selected }}" onClick="{{ tab.onSelect }}" style="{{ tab.style }}">{{ tab.label }}</button>
+        </sc-for>
+      </div>
+    </div>
+    <div style="maxWidth:1100px; margin:0 auto; display:flex; gap:clamp(28px,5vw,64px); alignItems:center; flexWrap:wrap">
+      <div style="position:relative; flex:0 1 320px; display:flex; justifyContent:center; background:#1E1E29; borderRadius:20px; padding:28px; border:1px solid #2E2E3B">
+        <img src="assets/maquina-maxima.png" alt="Máquina expendedora modelo Máxima Capacidad cargada de productos" style="width:100%; maxWidth:260px; height:auto; display:block">
+        <img data-cat-mascota="1" data-pm-anim="1" src="mascota-v2/puntomatica-costado-derecho.svg" alt="" style="animation:pm-bob 3.6s ease-in-out infinite; transformOrigin:50% 90%">
+      </div>
+      <div style="flex:1 1 420px">
+        <h3 style="margin:0 0 14px; fontSize:28px; fontWeight:700">{{ activeTitle }}</h3>
+        <p style="margin:0 0 26px; color:#A5A5B2; fontSize:16px; lineHeight:1.6">{{ activeDesc }}</p>
+        <ul style="listStyle:none; margin:0 0 32px; padding:0; display:grid; gridTemplateColumns:repeat(auto-fit,minmax(190px,1fr)); gap:12px 24px">
+          <sc-for list="{{ activeItems }}" as="item" hint-placeholder-count="6">
+            <li style="display:flex; gap:10px; alignItems:center; fontSize:15px; color:#DCDCE4">
+              <span style="width:6px; height:6px; borderRadius:50%; background:#FFC72C; flexShrink:0"></span>{{ item }}
+            </li>
+          </sc-for>
+        </ul>
+        <a href="#maquinas" style="display:inline-block; background:#FFC72C; color:#14141C; fontWeight:700; fontSize:15px; padding:14px 26px; borderRadius:10px" style-hover="background:#E6A800">Ver máquinas</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="servicios" style="position:relative; padding:clamp(56px,7vw,104px) 24px; background:#0F0F16">
+    <div style="position:absolute; inset:0; background:repeating-linear-gradient(135deg,#22222D 0 14px,#1A1A24 14px 28px); filter:blur(2px); opacity:0.8"></div>
+    <div style="position:absolute; inset:0; background:rgba(15,15,22,0.7)"></div>
+    <div style="position:relative; maxWidth:1100px; margin:0 auto; textAlign:center">
+      <h2 style="margin:0 0 48px; fontSize:clamp(30px,3.6vw,46px); fontWeight:800; letterSpacing:-1.3px">Servicios Incluidos</h2>
+      <div style="display:grid; gridTemplateColumns:repeat(auto-fit,minmax(260px,1fr)); gap:24px; textAlign:left">
+        <div style="background:#fff; color:#14141C; borderRadius:18px; padding:34px 30px">
+          <span style="display:flex; width:72px; height:72px; alignItems:center; justifyContent:center; borderRadius:16px; background:#F6F6F3; margin:0 auto 20px; transition:transform 200ms cubic-bezier(0.4,0,0.2,1)" style-hover="transform:scale(1.1)">
+            <img src="assets/icono-instalacion.png" alt="" style="width:52px; height:52px; objectFit:contain; display:block">
+          </span>
+          <h3 style="margin:0 0 8px; fontSize:19px; fontWeight:700">Instalación Sin Costo</h3>
+          <p style="margin:0; color:#6B6B76; fontSize:15px; lineHeight:1.6">Llevamos, instalamos y conectamos la máquina sin cobrar nada a la comunidad.</p>
+        </div>
+        <div style="background:#fff; color:#14141C; borderRadius:18px; padding:34px 30px">
+          <span style="display:flex; width:72px; height:72px; alignItems:center; justifyContent:center; borderRadius:16px; background:#F6F6F3; margin:0 auto 20px; transition:transform 200ms cubic-bezier(0.4,0,0.2,1)" style-hover="transform:scale(1.1)">
+            <img src="assets/icono-reposicion.png" alt="" style="width:52px; height:52px; objectFit:contain; display:block">
+          </span>
+          <h3 style="margin:0 0 8px; fontSize:19px; fontWeight:700">Reposición y Monitoreo Remoto</h3>
+          <p style="margin:0; color:#6B6B76; fontSize:15px; lineHeight:1.6">Controlamos el stock a distancia para que nunca falten productos.</p>
+        </div>
+        <div style="background:#fff; color:#14141C; borderRadius:18px; padding:34px 30px">
+          <span style="display:flex; width:72px; height:72px; alignItems:center; justifyContent:center; borderRadius:16px; background:#F6F6F3; margin:0 auto 20px; transition:transform 200ms cubic-bezier(0.4,0,0.2,1)" style-hover="transform:scale(1.1)">
+            <img src="assets/icono-soporte.png" alt="" style="width:52px; height:52px; objectFit:contain; display:block">
+          </span>
+          <h3 style="margin:0 0 8px; fontSize:19px; fontWeight:700">Soporte Técnico &lt;24h</h3>
+          <p style="margin:0; color:#6B6B76; fontSize:15px; lineHeight:1.6">Ante cualquier falla, un técnico local responde en menos de un día.</p>
+        </div>
+      </div>
+      
+    </div>
+  </section>
+
+  <section aria-label="Contexto de uso" style="display:grid; gridTemplateColumns:repeat(auto-fit,minmax(320px,1fr)); gap:2px; background:#14141C">
+    
+    
+  </section>
+
+  <section id="maquinas" style="background:#F6F6F3; color:#14141C; padding:clamp(56px,7vw,104px) 24px">
+    <div style="maxWidth:1200px; margin:0 auto">
+      <h2 style="margin:0 0 48px; textAlign:center; fontSize:clamp(30px,3.6vw,46px); fontWeight:800; letterSpacing:-1.3px">Nuestras Máquinas y Categorías</h2>
+      <div style="display:grid; gridTemplateColumns:repeat(auto-fit,minmax(300px,1fr)); gap:26px">
+        <article style="background:#fff; border:1px solid #E4E4E2; borderRadius:18px; overflow:hidden; display:flex; flexDirection:column">
+          <div style="height:280px; background:#F6F6F3; display:flex; alignItems:center; justifyContent:center; padding:20px">
+            <img src="assets/maquina-slim.png" alt="Modelo Slim / Estándar" style="height:100%; width:auto; display:block">
+          </div>
+          <div style="padding:24px; display:flex; flexDirection:column; gap:10px; flex:1">
+            <h3 style="margin:0; fontSize:19px; fontWeight:700">Modelo Slim / Estándar</h3>
+            <p style="margin:0; color:#6B6B76; fontSize:15px; lineHeight:1.6; flex:1">Ideal para conserjería, formato compacto.</p>
+            <a href="#contacto" style="alignSelf:flex-start; background:#14141C; color:#fff; fontWeight:600; fontSize:14px; padding:11px 20px; borderRadius:9px" style-hover="background:#1E1E29">Cotizar</a>
+          </div>
+        </article>
+        <article style="background:#fff; border:1px solid #E4E4E2; borderRadius:18px; overflow:hidden; display:flex; flexDirection:column">
+          <div style="position:relative; height:280px; background:#F6F6F3; display:flex; alignItems:center; justifyContent:center; padding:20px">
+            <img src="assets/maquina-maxima.png" alt="Modelo Máxima Capacidad" style="height:100%; width:auto; display:block">
+            <img data-maq-mascota="1" data-pm-anim="1" src="mascota-v2/puntomatica-costado-izquierdo.svg" alt="" style="animation:pm-bob 3.6s ease-in-out infinite; transformOrigin:50% 90%">
+          </div>
+          <div style="padding:24px; display:flex; flexDirection:column; gap:10px; flex:1">
+            <h3 style="margin:0; fontSize:19px; fontWeight:700">Modelo Máxima Capacidad</h3>
+            <p style="margin:0; color:#6B6B76; fontSize:15px; lineHeight:1.6; flex:1">Multiproducto, mayor stock.</p>
+            <a href="#contacto" style="alignSelf:flex-start; background:#14141C; color:#fff; fontWeight:600; fontSize:14px; padding:11px 20px; borderRadius:9px" style-hover="background:#1E1E29">Cotizar</a>
+          </div>
+        </article>
+        <sc-for list="{{ categorias }}" as="cat" hint-placeholder-count="4">
+          
+        </sc-for>
+      </div>
+      <div style="textAlign:center; marginTop:48px">
+        <a href="#contacto" style="display:inline-block; background:#FFC72C; color:#14141C; fontWeight:800; fontSize:17px; padding:19px 40px; borderRadius:12px" style-hover="background:#E6A800">Solicitar Evaluación Gratuita</a>
+      </div>
+    </div>
+  </section>
+
+  <sc-if value="{{ marcas }}" hint-placeholder-val="{{ true }}">
+    <section style="background:#fff; color:#14141C; borderTop:1px solid #E4E4E2; borderBottom:1px solid #E4E4E2; padding:34px 24px">
+      <div style="maxWidth:1200px; margin:0 auto; display:flex; alignItems:center; gap:36px; flexWrap:wrap; justifyContent:space-between">
+        <p style="margin:0; fontSize:15px; fontWeight:700; color:#6B6B76">Marcas que encontrarás en tu máquina</p>
+        <div style="display:flex; gap:28px; flexWrap:wrap; alignItems:center">
+          <img src="assets/logo-coca-cola.png" alt="Coca-Cola" style="height:46px; width:auto; maxWidth:175px; objectFit:contain; display:block">
+          
+          <img src="assets/logo-cachantun.webp" alt="Cachantún" style="height:46px; width:auto; maxWidth:175px; objectFit:contain; display:block">
+          <img src="assets/logo-kraft.jpg" alt="Kraft" style="height:62px; width:auto; maxWidth:150px; objectFit:contain; display:block; mixBlendMode:multiply">
+          <img src="assets/logo-costa.jpg" alt="Costa" style="height:62px; width:auto; maxWidth:135px; objectFit:contain; display:block; mixBlendMode:multiply">
+          <img src="assets/logo-pf.png" alt="PF — Productos Fernández" style="height:60px; width:auto; maxWidth:135px; objectFit:contain; display:block; mixBlendMode:multiply">
+        </div>
+      </div>
+    </section>
+  </sc-if>
+
+  <footer id="contacto" style="position:relative; background:#14141C; padding:clamp(56px,7vw,100px) 24px 0">
+    <div style="maxWidth:1200px; margin:0 auto">
+      <div style="maxWidth:720px; marginBottom:52px">
+        <h2 style="margin:0 0 14px; fontSize:clamp(30px,3.8vw,50px); fontWeight:800; letterSpacing:-1.4px; lineHeight:1.08; textWrap:balance">Solicita una Evaluación de Factibilidad Gratuita</h2>
+        <p style="margin:0; color:#A5A5B2; fontSize:17px">Sin costo ni compromiso para la administración del edificio.</p>
+      </div>
+      <div style="display:flex; gap:clamp(32px,5vw,72px); flexWrap:wrap; alignItems:flex-start">
+        <form onSubmit="{{ onSubmit }}" style="flex:1 1 460px; background:#1E1E29; border:1px solid #2E2E3B; borderRadius:20px; padding:clamp(26px,3vw,38px); display:grid; gridTemplateColumns:repeat(auto-fit,minmax(200px,1fr)); gap:18px">
+          <label style="display:flex; flexDirection:column; gap:7px; fontSize:13px; fontWeight:600; color:#C9C9D2">Nombre
+            <input name="nombre" required="{{ true }}" value="{{ form.nombre }}" onChange="{{ onChange }}" style="background:#14141C; border:1px solid #33333F; borderRadius:9px; padding:13px 14px; color:#fff; fontSize:15px; fontFamily:inherit" style-focus="borderColor:#FFC72C; outline:none">
+          </label>
+          <label style="display:flex; flexDirection:column; gap:7px; fontSize:13px; fontWeight:600; color:#C9C9D2">Apellido
+            <input name="apellido" required="{{ true }}" value="{{ form.apellido }}" onChange="{{ onChange }}" style="background:#14141C; border:1px solid #33333F; borderRadius:9px; padding:13px 14px; color:#fff; fontSize:15px; fontFamily:inherit" style-focus="borderColor:#FFC72C; outline:none">
+          </label>
+          <label style="display:flex; flexDirection:column; gap:7px; fontSize:13px; fontWeight:600; color:#C9C9D2; gridColumn:1/-1">Email
+            <input name="email" type="email" required="{{ true }}" value="{{ form.email }}" onChange="{{ onChange }}" style="background:#14141C; border:1px solid #33333F; borderRadius:9px; padding:13px 14px; color:#fff; fontSize:15px; fontFamily:inherit" style-focus="borderColor:#FFC72C; outline:none">
+          </label>
+          <label style="display:flex; flexDirection:column; gap:7px; fontSize:13px; fontWeight:600; color:#C9C9D2">Nombre edificio / oficina
+            <input name="edificio" required="{{ true }}" value="{{ form.edificio }}" onChange="{{ onChange }}" style="background:#14141C; border:1px solid #33333F; borderRadius:9px; padding:13px 14px; color:#fff; fontSize:15px; fontFamily:inherit" style-focus="borderColor:#FFC72C; outline:none">
+          </label>
+          <label style="display:flex; flexDirection:column; gap:7px; fontSize:13px; fontWeight:600; color:#C9C9D2">Dirección
+            <input name="direccion" value="{{ form.direccion }}" onChange="{{ onChange }}" style="background:#14141C; border:1px solid #33333F; borderRadius:9px; padding:13px 14px; color:#fff; fontSize:15px; fontFamily:inherit" style-focus="borderColor:#FFC72C; outline:none">
+          </label>
+          <label style="display:flex; flexDirection:column; gap:7px; fontSize:13px; fontWeight:600; color:#C9C9D2; gridColumn:1/-1">Comuna
+            <select name="comuna" value="{{ form.comuna }}" onChange="{{ onChange }}" style="background:#14141C; border:1px solid #33333F; borderRadius:9px; padding:13px 14px; color:#fff; fontSize:15px; fontFamily:inherit">
+              <option value="Concepción">Concepción</option>
+              <option value="San Pedro de la Paz">San Pedro de la Paz</option>
+              <option value="Talcahuano">Talcahuano</option>
+              <option value="Chiguayante">Chiguayante</option>
+            </select>
+          </label>
+          <label style="display:flex; gap:11px; alignItems:center; fontSize:14px; color:#C9C9D2; gridColumn:1/-1">
+            <input type="checkbox" name="novedades" checked="{{ form.novedades }}" onChange="{{ onChange }}" style="width:17px; height:17px; accentColor:#FFC72C">Quiero recibir novedades
+          </label>
+          <div style="gridColumn:1/-1; display:flex; alignItems:center; gap:16px; flexWrap:wrap">
+            <button type="submit" style="background:#FFC72C; color:#14141C; fontWeight:800; fontSize:15px; padding:15px 30px; borderRadius:10px; border:none; cursor:pointer; fontFamily:inherit" style-hover="background:#E6A800">Enviar Solicitud</button>
+            <span style="fontSize:14px; color:#FFC72C; fontWeight:600">{{ formMsg }}</span>
+          </div>
+        </form>
+
+        <div style="flex:1 1 300px; position:relative">
+          <p style="margin:0 0 10px; fontSize:12px; fontWeight:800; letterSpacing:2px; color:#8A8A96">CONTACTO DIRECTO</p>
+          <p style="margin:0 0 6px; fontSize:26px; fontWeight:700">+56 9 9558 4166</p>
+          <p style="margin:0 0 30px; fontSize:16px; color:#C9C9D2">contacto@puntomatica.cl</p>
+          <p style="margin:0 0 14px; fontSize:12px; fontWeight:800; letterSpacing:2px; color:#8A8A96">ZONA DE COBERTURA</p>
+          <ul style="listStyle:none; margin:0 0 8px; padding:0; display:flex; flexDirection:column; gap:11px">
+            <sc-for list="{{ comunas }}" as="c" hint-placeholder-count="4">
+              <li style="display:flex; gap:11px; alignItems:center; fontSize:15px; color:#DCDCE4">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#FFC72C" stroke-width="2.4" aria-hidden="true"><path d="M4 12.5l5 5L20 6.5"></path></svg>{{ c }}
+              </li>
+            </sc-for>
+          </ul>
+          <div style="display:flex; gap:12px">
+            
+            
+            
+          </div>
+          <sc-if value="{{ mascotas }}" hint-placeholder-val="{{ true }}">
+            <div data-footer-mascota="1" style="marginTop:-120px; marginBottom:0; width:260px; height:260px; position:relative; pointerEvents:none">
+              <img src="mascota-v2/puntomatica-costado-izquierdo.svg" alt="" data-pm-anim="1" style="position:absolute; left:50px; bottom:-14px; width:160px; height:160px; display:block; animation:pm-bob 3.6s ease-in-out infinite; transformOrigin:50% 90%">
+            </div>
+          </sc-if>
+        </div>
+      </div>
+
+      <div style="marginTop:64px; borderTop:1px solid #26262F; padding:26px 0; display:flex; gap:20px; justifyContent:space-between; alignItems:center; flexWrap:wrap">
+        <div style="display:flex; alignItems:center; gap:10px">
+          <svg width="20" height="26" viewBox="0 0 120 160" aria-hidden="true">
+            <rect x="36" y="128" width="12" height="22" rx="6" fill="#E0A100"></rect>
+            <rect x="72" y="128" width="12" height="22" rx="6" fill="#E0A100"></rect>
+            <rect x="26" y="144" width="30" height="13" rx="6.5" fill="#C48A00"></rect>
+            <rect x="64" y="144" width="30" height="13" rx="6.5" fill="#C48A00"></rect>
+            <rect x="10" y="4" width="100" height="132" rx="20" fill="#FFC72C"></rect>
+            <rect x="20" y="14" width="80" height="52" rx="12" fill="#1E1E29"></rect>
+            <rect x="40" y="27" width="10" height="15" rx="5" fill="#FFC72C"></rect>
+            <rect x="70" y="27" width="10" height="15" rx="5" fill="#FFC72C"></rect>
+            <path d="M47 50 Q60 60 73 50" stroke="#FFC72C" stroke-width="5" fill="none" stroke-linecap="round"></path>
+            <rect x="20" y="74" width="52" height="34" rx="7" fill="#1E1E29"></rect>
+            <circle cx="33" cy="91" r="5.5" fill="#E5484D"></circle>
+            <circle cx="46" cy="91" r="5.5" fill="#46A758"></circle>
+            <circle cx="59" cy="91" r="5.5" fill="#3E63DD"></circle>
+            <rect x="80" y="74" width="20" height="34" rx="6" fill="#E6A800"></rect>
+            <rect x="87" y="82" width="6" height="18" rx="3" fill="#14141C"></rect>
+            <rect x="20" y="114" width="80" height="14" rx="7" fill="#1E1E29"></rect>
+          </svg>
+          <span style="fontSize:13px; color:#8A8A96">© 2026 PuntoMatica — Todos los derechos reservados</span>
+        </div>
+        <div style="display:flex; gap:22px; fontSize:13px">
+          <a href="#inicio" style="color:#8A8A96">Inicio</a>
+          <a href="#nosotros" style="color:#8A8A96">Nosotros</a>
+          <a href="#beneficios" style="color:#8A8A96">Beneficios</a>
+          <a href="#catalogo" style="color:#8A8A96">Catálogo</a>
+          <a href="#servicios" style="color:#8A8A96">Servicios</a>
+          <a href="#maquinas" style="color:#8A8A96">Máquinas</a>
+          <a href="#contacto" style="color:#8A8A96">Contacto</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+</main>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;mascotas&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Contenido&quot;},&quot;marcas&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Contenido&quot;},&quot;catalogoInicial&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Abarrotes Esenciales&quot;,&quot;Snacks e Impulso&quot;,&quot;Bebidas Frías&quot;,&quot;Mascotas&quot;],&quot;default&quot;:&quot;Abarrotes Esenciales&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Catálogo&quot;}}">
+const CATS = [
+  { key: 'abarrotes', label: 'Abarrotes Esenciales', title: 'Abarrotes Esenciales', desc: 'Lo que se acaba justo a la hora de cocinar, disponible sin salir del edificio.', items: ['Aceite', 'Tallarines', 'Crema de leche', 'Mayonesa', 'Aderezos', 'Conservas (atún, jurel)', 'Jamón de pavo/cerdo', 'Queso laminado'] },
+  { key: 'snacks', label: 'Snacks e Impulso', title: 'Snacks e Impulso', desc: 'El antojo de la tarde y la reunión improvisada, resueltos a pasos del ascensor.', items: ['Papas fritas', 'Doritos', 'Frutos secos', 'Barras de chocolate', 'Galletas', 'Golosinas'] },
+  { key: 'bebidas', label: 'Bebidas Frías', title: 'Bebidas Frías', desc: 'Refrigeración permanente para bebidas a temperatura ideal las 24 horas.', items: ['Refrescos en lata', 'Aguas', 'Isotónicas', 'Energéticas'] },
+  { key: 'mascotas', label: 'Mascotas', title: 'Mascotas', desc: 'Porque el gato y el perro del departamento también son vecinos.', items: ['Churu / sachets para gatos', 'Snacks para perros'] }
+];
+
+const SLIDES = [
+  { src: 'assets/maquina-iso.jpg', alt: 'Máquina expendedora de snacks vista en perspectiva' },
+  { src: 'assets/maquina-iso-2.jpg', alt: 'Máquina expendedora de bebidas azul' },
+  { src: 'assets/maquina-iso-3.jpg', alt: 'Máquina expendedora de snacks plateada' },
+  { src: 'assets/maquina-iso-4.jpg', alt: 'Máquina expendedora de bebidas roja' }
+];
+
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    const inicial = props.catalogoInicial || 'Abarrotes Esenciales';
+    const found = CATS.find(c => c.label === inicial);
+    this.state = {
+      active: found ? found.key : 'abarrotes',
+      slide: 0,
+      form: { nombre: '', apellido: '', email: '', edificio: '', direccion: '', comuna: 'Concepción', novedades: true },
+      msg: ''
+    };
+  }
+
+  handleChange = (e) => {
+    const t = e.target;
+    const val = t.type === 'checkbox' ? t.checked : t.value;
+    this.setState(s => ({ form: { ...s.form, [t.name]: val }, msg: '' }));
+  };
+
+  handleSubmit = (e) => {
+    e.preventDefault();
+    const f = this.state.form;
+    const faltan = ['nombre', 'apellido', 'email', 'edificio'].filter(k => !String(f[k]).trim());
+    if (faltan.length) { this.setState({ msg: 'Completa los campos obligatorios.' }); return; }
+    this.setState({ msg: 'Enviando…' });
+    fetch('https://formsubmit.co/ajax/seba.romanp@gmail.com', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      body: JSON.stringify({
+        _subject: 'Nueva solicitud de evaluación — PuntoMatica',
+        _template: 'table',
+        Nombre: f.nombre + ' ' + f.apellido,
+        Email: f.email,
+        Edificio: f.edificio,
+        Dirección: f.direccion || '—',
+        Comuna: f.comuna,
+        'Quiere novedades': f.novedades ? 'Sí' : 'No'
+      })
+    })
+      .then(r => r.json())
+      .then(() => this.setState({
+        msg: '¡Gracias! Te contactaremos dentro de 24 horas.',
+        form: { nombre: '', apellido: '', email: '', edificio: '', direccion: '', comuna: 'Concepción', novedades: true }
+      }))
+      .catch(() => this.setState({ msg: 'No se pudo enviar. Escríbenos a contacto@puntomatica.cl' }));
+  };
+
+  onScroll = () => {
+    const y = window.scrollY || window.pageYOffset || 0;
+    const ids = ['inicio', 'nosotros', 'beneficios', 'catalogo', 'servicios', 'maquinas', 'contacto'];
+    let current = 'inicio';
+    for (const id of ids) {
+      const el = document.getElementById(id);
+      if (el && el.getBoundingClientRect().top <= 140) current = id;
+    }
+    const floating = y > 120;
+    if (floating !== this.state.floating || current !== this.state.section) {
+      this.setState({ floating, section: current });
+    }
+  };
+
+  componentDidMount() {
+    window.addEventListener('scroll', this.onScroll, { passive: true });
+    this.onScroll();
+    this.timer = setInterval(() => this.setState(s => ({ slide: (s.slide + 1) % SLIDES.length })), 4000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.timer);
+    window.removeEventListener('scroll', this.onScroll);
+  }
+
+  goSlide = (i) => {
+    clearInterval(this.timer);
+    this.setState({ slide: i });
+    this.timer = setInterval(() => this.setState(s => ({ slide: (s.slide + 1) % SLIDES.length })), 4000);
+  };
+
+  renderVals() {
+    const active = CATS.find(c => c.key === this.state.active) || CATS[0];
+    return {
+      floatAttr: this.state.floating ? '1' : '0',
+      activeSection: this.state.section || 'inicio',
+      menuOpen: !!this.state.menuOpen,
+      menuAttr: this.state.menuOpen ? '1' : '0',
+      toggleMenu: () => this.setState(s => ({ menuOpen: !s.menuOpen })),
+      closeMenu: () => this.setState({ menuOpen: false }),
+      op0: (this.state.slide || 0) === 0 ? 1 : 0,
+      op1: this.state.slide === 1 ? 1 : 0,
+      op2: this.state.slide === 2 ? 1 : 0,
+      op3: this.state.slide === 3 ? 1 : 0,
+      slides: SLIDES.map((s, i) => {
+        const on = i === (this.state.slide || 0);
+        return {
+          alt: s.alt,
+          on,
+          go: () => this.goSlide(i),
+          dotStyle: {
+            width: on ? 26 : 9, height: 9, borderRadius: 999, border: 'none', padding: 0,
+            background: on ? '#14141C' : '#C9C9C4', cursor: 'pointer',
+            transition: 'width 260ms ease, background 260ms ease'
+          }
+        };
+      }),
+      mascotas: this.props.mascotas ?? true,
+      marcas: this.props.marcas ?? true,
+      tabs: CATS.map(c => {
+        const on = c.key === this.state.active;
+        return {
+          label: c.label,
+          selected: on,
+          onSelect: () => this.setState({ active: c.key }),
+          style: {
+            padding: '13px 24px',
+            borderRadius: 999,
+            border: on ? '1px solid #FFC72C' : '1px solid #33333F',
+            background: on ? '#FFC72C' : 'transparent',
+            color: on ? '#14141C' : '#C9C9D2',
+            fontWeight: 600,
+            fontSize: 15,
+            fontFamily: 'inherit',
+            cursor: 'pointer',
+            transition: 'background 160ms ease, color 160ms ease'
+          }
+        };
+      }),
+      activeTitle: active.title,
+      activeDesc: active.desc,
+      activeItems: active.items,
+      categorias: [
+        { titulo: 'Abarrotes Esenciales', desc: 'Aceite, pastas, conservas y fiambres en formato individual.', foto: '[ FOTO: ABARROTES ]' },
+        { titulo: 'Snacks y Bebidas', desc: 'Papas, galletas, chocolates y bebidas de impulso.', img: 'assets/snacks-bebidas.jpg' },
+        { titulo: 'Refrigerados', desc: 'Bebidas y lácteos siempre a temperatura ideal.', foto: '[ FOTO: REFRIGERADOS ]' },
+        { titulo: 'Mascotas', desc: 'Churu, sachets y snacks para gatos y perros.', foto: '[ FOTO: MASCOTAS ]' }
+      ],
+      logos: ['LOGO 1', 'LOGO 2', 'LOGO 3', 'LOGO 4', 'LOGO 5', 'LOGO 6'],
+      comunas: ['Concepción', 'San Pedro de la Paz', 'Talcahuano', 'Chiguayante'],
+      form: this.state.form,
+      formMsg: this.state.msg,
+      onChange: this.handleChange,
+      onSubmit: this.handleSubmit
+    };
+  }
+}
+</script>
+</body>
+</html>
